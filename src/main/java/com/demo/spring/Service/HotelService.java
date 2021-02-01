@@ -47,4 +47,10 @@ public class HotelService {
 		
 	}
 	
+	public void deleteHotelById(int id)
+	{
+		getHotelById(id);
+		this.hotelRepo.deleteById(id);;
+ 	}
+	
 }

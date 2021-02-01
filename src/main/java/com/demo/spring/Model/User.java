@@ -3,6 +3,8 @@ package com.demo.spring.Model;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import com.mongodb.lang.NonNull;
+
 @Document(collection="user")
 public class User {
 
@@ -14,6 +16,7 @@ public class User {
 	public void setId(String id) {
 		this.id = id;
 	}
+	@NonNull 
 	private String username;
 	private String password;
 	private String role;

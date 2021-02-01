@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -11,6 +12,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.demo.spring.DAO.UserRepository;
+import com.demo.spring.Model.ApiResponse;
 import com.demo.spring.Model.Hotel;
 import com.demo.spring.Model.JWTOKEN;
 import com.demo.spring.Model.JwtAuthenticationResponse;
@@ -52,7 +55,7 @@ public class FirstController {
 	{
 		
 			System.out.println(user.getPassword()+" "+ user.getUsername()+"MKBK");
-	 Authentication user1=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword())
+	 Authentication user1=authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getId(), user.getPassword())
 );
 		//	UserDetails user1=myD.loadUserByUsername(user.getUsername());
 			
@@ -68,29 +71,7 @@ public class FirstController {
 		return "Hello!! There";
 	}
 	
-	@PostMapping("/hotels")
-	public void saveHotels(@RequestBody Hotel hotel)
-	{
-		this.hotelS.saveHotel(hotel);
-	}
 	
-	@GetMapping("/hotels")
-	public List<Hotel > getAll()
-	{
-		return this.hotelS.getAll();
-	}
-	
-	@GetMapping("/hotels/{id}")
-	public Optional<Hotel> getHotelById(@PathVariable("id") int id)
-	{
-		return this.hotelS.getHotelById(id);
-	}
-	
-	@PutMapping("/hotels/{id}")
-	public void updateHotelById(@PathVariable("id") int id,@RequestBody Hotel hotel)
-	{
-		this.hotelS.updateHotelbyId(hotel, id);
-	}
 	
 	@GetMapping("/users")
 	public List<User> getAllUsers()
@@ -99,10 +80,12 @@ public class FirstController {
 	}
 	
 	@PostMapping("/users")
-	public ResponseEntity<String> addUsers(@RequestBody User user)
+	public ResponseEntity<ApiResponse> addUsers(@RequestBody User user)
 	{
 		this.userS.saveUser(user);
-		return ResponseEntity.ok(new String("User got saved successfully"));
+		return ResponseEntity.ok(new ApiResponse("User got saved successfully",HttpStatus.OK));
 	}
+	
+	
 
 }
